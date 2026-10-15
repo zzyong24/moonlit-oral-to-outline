@@ -51,5 +51,12 @@ class CheckOralScriptTest(unittest.TestCase):
         self.assertIn("扩写标记", {i["rule"] for i in r["issues"]})
 
 
+    def test_announce_and_preach_flagged(self):
+        r = check("我建议用 Mac", "第一个岔口：Windows 还是 Mac？我建议用 Mac。不丢人。")
+        rules = {i["rule"] for i in r["issues"]}
+        self.assertIn("报幕", rules)
+        self.assertIn("说教", rules)
+
+
 if __name__ == "__main__":
     unittest.main()

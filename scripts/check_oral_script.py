@@ -10,6 +10,8 @@ import argparse, json, re, sys
 MARKUP = [r"\[画面[:：][^\]]*\]", r"\[补[^\]]*\]", r"\[改[^\]]*\]", r"\[锁\]", r"\*\*", r"／", r"^#+.*$", r"^>.*$", r"^\s*[-|].*$"]
 HEDGES = ["待核验", "以实际为准", "仅供参考", "不能保证", "这只能证明", "具体以官方为准"]
 AI_TONE = ["赋能", "助力", "值得一提的是", "总而言之", "综上所述", "让我们", "家人们", "干货满满", "不得不说", "众所周知", "在这个时代", "一起来看看"]
+ANNOUNCE = re.compile(r"第[一二三四五六七八九十]+个(岔口|问题|阶段|部分|环节)[：:]|一句话总结|接下来我们|下面我们来|首先[^。]*其次|最后我们来")
+PREACH = ["不丢人", "这就是很多人的误区", "你要知道", "记住", "请记住", "说到底", "归根结底"]
 FILLERS = ["然后", "就是说", "那个", "嗯", "对吧", "其实"]
 NUM = re.compile(r"[0-9０-９][0-9０-９.,，]*[万千百亿%]?|[一二两三四五六七八九十百千万亿半]+(?=[个块元天周月年小分秒字条次倍人期款遍])")
 MIN_KEEP = {"polish": 0.55, "rewrite": 0.30, "expand": 0.15}
@@ -117,6 +119,11 @@ def check(oral, script_raw, mode="polish"):
     for w in AI_TONE:
         if w in script and w not in oral:
             issues.append({"level": "warn", "rule": "AI 腔", "detail": f"“{w}”"})
+    for m in sorted(set(x.group(0) for x in ANNOUNCE.finditer(script))):
+        issues.append({"level": "warn", "rule": "报幕", "detail": f"“{m}”像讲课报幕；改用故事或问题过渡"})
+    for w in PREACH:
+        if w in script and w not in oral:
+            issues.append({"level": "warn", "rule": "说教", "detail": f"“{w}”是助手加的判词/安慰；删掉或换成作者的经历"})
     body = han(script)
     spoken = units(script)
     filler = sum(script.count(w) for w in FILLERS)
