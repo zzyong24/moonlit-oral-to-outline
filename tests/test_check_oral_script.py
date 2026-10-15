@@ -34,5 +34,22 @@ class CheckOralScriptTest(unittest.TestCase):
         self.assertTrue(r["ok"], r["issues"])
 
 
+    def test_breath_group_too_long(self):
+        r = check("我试了五天", "我试了五天然后发现最难的根本就不是总结而是负责人老是被它搞错")
+        self.assertIn("气口", {i["rule"] for i in r["issues"]})
+
+    def test_latin_words_count_as_units(self):
+        r = check("Claude Code 和 Codex", "Claude Code 和 Codex 和 OpenCode 和 DeepSeek Harness 和 Hermes 和 OpenClaw 和 WorkBuddy")
+        self.assertIn("气口", {i["rule"] for i in r["issues"]})
+
+    def test_expand_mode_declared_numbers_not_flagged(self):
+        r = check("本地部署太慢", "本地部署太慢。／一秒只写 **11 个 token**。 [补:数据]", mode="expand")
+        self.assertNotIn("新增数字", {i["rule"] for i in r["issues"]})
+
+    def test_expand_mode_requires_tags(self):
+        r = check("本地部署太慢", "本地部署太慢，一秒只写十一个字。", mode="expand")
+        self.assertIn("扩写标记", {i["rule"] for i in r["issues"]})
+
+
 if __name__ == "__main__":
     unittest.main()
