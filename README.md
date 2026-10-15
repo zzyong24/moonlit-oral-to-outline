@@ -1,8 +1,8 @@
-![口述成纲：把你讲过的想法，整理成清晰大纲](assets/readme/hero.png)
+![口述成稿：把你讲过的想法，写成能直接念的稿子](assets/readme/hero.png)
 
-# 月明·口述成纲
+# 月明·口述成稿
 
-把你讲过的想法整理成可确认的大纲，确认方向以后，再补证据、写成稿。
+把你讲过的想法，写成你自己能直接对着提词器念、念出来还像你本人的短视频口播稿。需要调研或演示的长内容，先整理大纲，确认后再补证据、写成稿。
 
 适合已经有经验、观点或实现过程，想先说出来再组织成文章或视频的人。你提供原始口述或转写，Agent 帮你理顺主线，保留你的经历和口吻。
 
@@ -10,6 +10,7 @@
 
 | 你现在有 | 这一步交付 |
 | --- | --- |
+| 一段想拍成短视频的口述 | 一屏骨架，确认后给提词器版口播稿（重音、气口、画面提示都标好） |
 | 一段口述、转写或零散讲解 | 一份有主线、章节与观众收益的大纲 |
 | 想演示的操作，但还没安排顺序 | 演示动作、预期观察和时间分配 |
 | 说过但还没核验的判断 | 明确标出的证据缺口 |
@@ -50,6 +51,10 @@ npx skills add zzyong24/moonlit-oral-to-outline
 安装后直接说：
 
 ```text
+用 moonlit-oral-to-outline 把下面这段口述写成两分钟口播稿，直接出稿。
+```
+
+```text
 用 moonlit-oral-to-outline 整理下面这段口述。
 先给我大纲，保留我的主张和经历，把需要补证据的地方标出来。
 ```
@@ -65,7 +70,7 @@ npx skills add zzyong24/moonlit-oral-to-outline
 
 ## 配置与配套能力
 
-大纲阶段无需额外配置、API Key 或脚本环境。输入是文本口述或已有转写；这个 Skill 不提供音频转写服务。
+无需额外配置或 API Key；检查脚本只依赖 Python 3 标准库。输入是文本口述或已有转写；这个 Skill 不提供音频转写服务。
 
 | 阶段 | 需要的能力 |
 | --- | --- |
@@ -87,7 +92,7 @@ npx skills add zzyong24/moonlit-oral-to-outline
 
 本 Skill 处理“我先说一遍，你帮我整理”的任务。选题采集、音频转写、画图、录屏、成片与平台发布交给对应能力。
 
-核心流程见 [SKILL.md](SKILL.md)，大纲格式见 [模板](assets/outline-template.md)。外部服务与跨宿主行为需要在使用者环境中验证。
+核心流程见 [SKILL.md](SKILL.md)，写稿方法见 [六步手艺](references/oral-to-script-method.md) 与 [改前改后示例](references/examples.md)，格式见 [口播稿模板](assets/script-template.md)、[大纲模板](assets/outline-template.md)。交付前可运行 `python3 scripts/check_oral_script.py` 做机械检查（只需 Python 3 标准库）。外部服务与跨宿主行为需要在使用者环境中验证。
 
 ---
 
